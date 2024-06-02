@@ -14,21 +14,21 @@ public class CourseRepository {
     @Autowired
     EntityManager em;
 
-    public Course findById(Long id){
-       return em.find(Course.class, id);
+    public Course findById(Long id) {
+        return em.find(Course.class, id);
     }
 
-    public void save(Course course){
-        if(Objects.nonNull(course.getId())){
+    public void save(Course course) {
+        if (Objects.nonNull(course.getId())) {
             em.merge(course);
         } else {
             em.persist(course);
         }
     }
 
-    public void deleteById(Long id){
+    public void deleteById(Long id) {
         Course course = findById(id);
-        if(Objects.nonNull(course)) {
+        if (Objects.nonNull(course)) {
             em.remove(course);
         }
     }
