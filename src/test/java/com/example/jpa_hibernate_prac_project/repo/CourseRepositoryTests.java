@@ -17,31 +17,41 @@ class CourseRepositoryTests {
 	@Autowired
 	CourseRepository repository;
 
-	@BeforeEach
+	@Test
 	@DirtiesContext
-	void setUp(){
+	void testFindById() {
 		repository.save(new Course("English"));
+		Course course = repository.findById(1l);
+		assertEquals("English", course.getName());
 	}
 
 	@Test
-	void testFindById() {
-		Course course = repository.findById(1l);
-		assertEquals(course.getName(), "English");
+	@DirtiesContext
+	void testSaveInsert() {
+		Course course = new Course("Bangla");
+		repository.save(course);
+		Course dbCourse = repository.findById(1l);
+		assertEquals(course.getName(), dbCourse.getName());
 	}
 
+	@Test
+	@DirtiesContext
+	void testSaveUpdate() {
+		repository.save(new Course("English"));
+		Course dbCourse = repository.findById(1l);
+		dbCourse.setName("Math");
+		repository.save(dbCourse);
+		assertEquals("Math", dbCourse.getName());
+	}
 
 	@Test
 	@DirtiesContext
 	void testDeleteById() {
+		repository.save(new Course("English"));
 		repository.deleteById(1l);
 		Course course = repository.findById(1l);
 		assertNull(course);
 	}
 
-	@AfterEach
-	@DirtiesContext
-	void cleanUp(){
-		repository.deleteById(1l);
-	}
 
 }
