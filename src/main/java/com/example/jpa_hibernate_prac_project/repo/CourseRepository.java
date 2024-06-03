@@ -18,12 +18,19 @@ public class CourseRepository {
         return em.find(Course.class, id);
     }
 
-    public void save(Course course) {
+
+//    public Course findByName(String name) {
+//        return em.createNamedQuery();
+//    }
+
+    public Long save(Course course) {
         if (Objects.nonNull(course.getId())) {
             em.merge(course);
         } else {
             em.persist(course);
         }
+        em.flush();
+        return course.getId();
     }
 
     public void deleteById(Long id) {
