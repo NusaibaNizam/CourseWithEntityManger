@@ -6,8 +6,15 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
+import static com.example.jpa_hibernate_prac_project.constants.CourseConstants.FIND_COURSE_BY_NAME_NAMED_QUERY;
+import static com.example.jpa_hibernate_prac_project.constants.CourseConstants.NAME_QUERY_PARAM;
+
 @Entity
 @Table(name = "CourseDetails")
+@NamedQueries(value = {
+        @NamedQuery(query = "Select c from Course c where c.name = :" + NAME_QUERY_PARAM,
+                name = FIND_COURSE_BY_NAME_NAMED_QUERY)
+})
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

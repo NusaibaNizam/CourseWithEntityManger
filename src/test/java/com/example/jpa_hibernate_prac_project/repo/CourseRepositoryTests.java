@@ -40,6 +40,13 @@ class CourseRepositoryTests {
 
     @Test
     @DirtiesContext
+    void testFindByName() {
+        Course course = repository.findByName("English");
+        assertEquals(id, course.getId());
+    }
+
+    @Test
+    @DirtiesContext
     void testSaveInsert() {
         Course course = new Course("Bangla");
         Long id = repository.save(course);

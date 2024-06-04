@@ -2,11 +2,15 @@ package com.example.jpa_hibernate_prac_project.repo;
 
 import com.example.jpa_hibernate_prac_project.entity.Course;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.Objects;
+
+import static com.example.jpa_hibernate_prac_project.constants.CourseConstants.FIND_COURSE_BY_NAME_NAMED_QUERY;
+import static com.example.jpa_hibernate_prac_project.constants.CourseConstants.NAME_QUERY_PARAM;
 
 @Repository
 @Transactional
@@ -18,10 +22,12 @@ public class CourseRepository {
         return em.find(Course.class, id);
     }
 
-
-//    public Course findByName(String name) {
-//        return em.createNamedQuery();
-//    }
+    public Course findByName(String name) {
+        TypedQuery<Course> findCourseByName =
+                em.createNamedQuery(FIND_COURSE_BY_NAME_NAMED_QUERY, Course.class);
+        findCourseByName.setParameter(NAME_QUERY_PARAM, name);
+        return findCourseByName.getSingleResult();
+    }
 
     public Long save(Course course) {
         if (Objects.nonNull(course.getId())) {
