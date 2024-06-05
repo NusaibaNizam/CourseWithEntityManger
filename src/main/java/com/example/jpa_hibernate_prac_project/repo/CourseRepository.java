@@ -2,9 +2,11 @@ package com.example.jpa_hibernate_prac_project.repo;
 
 import com.example.jpa_hibernate_prac_project.entity.Course;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 
 import java.util.Objects;
@@ -36,6 +38,8 @@ public class CourseRepository {
             em.persist(course);
         }
         em.flush();
+
+        em.close();
         return course.getId();
     }
 
@@ -44,5 +48,14 @@ public class CourseRepository {
         if (Objects.nonNull(course)) {
             em.remove(course);
         }
+    }
+
+    @Modifying
+    public int updateAllCourseCredit(Double credit){
+        Query nativeQuery = em.createNativeQuery("UPDATE Course SET name = 'gh'", Course.class);
+   //     nativeQuery.setParameter("credit", credit);
+        int rows = nativeQuery.executeUpdate();
+//        em.getTransaction().commit();
+        return rows;
     }
 }

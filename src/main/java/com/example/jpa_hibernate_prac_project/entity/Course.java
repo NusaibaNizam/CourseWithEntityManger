@@ -10,7 +10,7 @@ import static com.example.jpa_hibernate_prac_project.constants.CourseConstants.F
 import static com.example.jpa_hibernate_prac_project.constants.CourseConstants.NAME_QUERY_PARAM;
 
 @Entity
-@Table(name = "CourseDetails")
+@Table(name = "Course")
 @NamedQueries(value = {
         @NamedQuery(query = "Select c from Course c where c.name = :" + NAME_QUERY_PARAM,
                 name = FIND_COURSE_BY_NAME_NAMED_QUERY)
@@ -23,6 +23,9 @@ public class Course {
 
     @Column(name = "name", nullable = false, length = 100)
     private String name;
+
+    @Column(name = "credit")
+    private Double credit;
 
     @CreationTimestamp
     @Column(name = "createDate", updatable = false, insertable = false)
@@ -37,6 +40,11 @@ public class Course {
 
     public Course(String name) {
         this.name = name;
+    }
+
+    public Course(String name, Double credit) {
+        this.name = name;
+        this.credit = credit;
     }
 
     public Long getId() {
@@ -57,5 +65,13 @@ public class Course {
 
     public LocalDateTime getUpdateDate() {
         return updateDate;
+    }
+
+    public Double getCredit() {
+        return credit;
+    }
+
+    public void setCredit(Double credit) {
+        this.credit = credit;
     }
 }

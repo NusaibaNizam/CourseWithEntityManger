@@ -25,7 +25,7 @@ class CourseRepositoryTests {
 
     @BeforeEach
     void setUp() {
-        english = new Course("English");
+        english = new Course("English", 8.9);
         entityManager.persist(english);
         entityManager.flush();
         id = english.getId();
@@ -58,11 +58,12 @@ class CourseRepositoryTests {
     @Test
     @DirtiesContext
     void testSaveUpdate() {
-
         Course dbCourse = repository.findById(id);
         dbCourse.setName("Math");
+        dbCourse.setCredit(1.8);
         repository.save(dbCourse);
         assertEquals("Math", dbCourse.getName());
+        assertEquals(1.8, dbCourse.getCredit());
     }
 
     @Test
@@ -73,6 +74,15 @@ class CourseRepositoryTests {
         assertNull(course);
     }
 
+    @Test
+    @DirtiesContext
+    void testUpdateAllCourseCredit() {
+        Course course = repository.findById(id);
+        assertEquals(8.9, course.getCredit());
+        repository.updateAllCourseCredit(1.5);
+        course = repository.findById(id);
+        assertEquals(1.5, course.getCredit());
+    }
     @AfterEach
     void cleanUp() {
         entityManager.remove(english);
